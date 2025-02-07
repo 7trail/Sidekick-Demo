@@ -103,8 +103,7 @@ function ProfileSelect() {
 function SpeechBubble() {
   const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}]);
 
-  if (!hasBeenSet && window !== undefined) {
-    hasBeenSet = true;
+  useEffect(() => {
     window.setInterval(() => {
       color = {r: lerp(color.r, targetColor.r, 0.05), g: lerp(color.g, targetColor.g, 0.05), b: lerp(color.b, targetColor.b, 0.05)};
       let newFactor = 1 * (isListening ? 0.4 : 1) * (isSpeaking ? 1.5 : 1);
@@ -135,7 +134,7 @@ function SpeechBubble() {
       
       t+= 0.04;
     }, 20)
-  }
+  });
   return (
     <div id="speechBubble">
       <div className="circle" id="circle1" style={{height: speechPart1Height, backgroundColor: `rgb(${speechPart1Color.r}, ${speechPart1Color.g}, ${speechPart1Color.b})`}}></div>
