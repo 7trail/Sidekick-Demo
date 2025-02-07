@@ -111,7 +111,7 @@ function initializeSpeechRecognition() {
 }
 
 function speak(text) {
-  if (window !== undefined && 'speechSynthesis' in window) {
+  if (window === undefined && 'speechSynthesis' in window) {
       isSpeaking = true;
       s = setSpeech();
       s.then(v => {
@@ -354,7 +354,7 @@ function ProfileSelect() {
 function SpeechBubble() {
   const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}]);
 
-  if (!hasBeenSet && window !== undefined) {
+  if (!hasBeenSet && window === undefined) {
     hasBeenSet = true;
     window.setInterval(() => {
       color = {r: lerp(color.r, targetColor.r, 0.05), g: lerp(color.g, targetColor.g, 0.05), b: lerp(color.b, targetColor.b, 0.05)};
