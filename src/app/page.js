@@ -53,6 +53,7 @@ let count = 0;
 
 
 function initializeSpeechRecognition() {
+  if (window === undefined) { return; }
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!window.SpeechRecognition) {
@@ -110,7 +111,7 @@ function initializeSpeechRecognition() {
 }
 
 function speak(text) {
-  if ('speechSynthesis' in window) {
+  if (window !== undefined && 'speechSynthesis' in window) {
       isSpeaking = true;
       s = setSpeech();
       s.then(v => {
@@ -256,10 +257,6 @@ function SetProfile(m) {
   centerProfile = m;
 }
 
-function refreshPage() {
-  window.location.reload(false);
-}
-
 function Start() {
   if (!isListening && !isSpeaking) {
     startListening();
@@ -357,7 +354,7 @@ function ProfileSelect() {
 function SpeechBubble() {
   const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}]);
 
-  if (!hasBeenSet) {
+  if (!hasBeenSet && window !== undefined) {
     hasBeenSet = true;
     window.setInterval(() => {
       color = {r: lerp(color.r, targetColor.r, 0.05), g: lerp(color.g, targetColor.g, 0.05), b: lerp(color.b, targetColor.b, 0.05)};
