@@ -183,6 +183,22 @@ function SpeedSlider() {
 }
 
 function VoiceList() {
+  function setSpeech() {
+    return new Promise(
+        function (resolve, reject) {
+            if (window === undefined) { resolve([]); return null;}
+            let synth = window.speechSynthesis;
+            let id;
+  
+            id = setInterval(() => {
+                if (synth.getVoices().length !== 0) {
+                    resolve(synth.getVoices());
+                    clearInterval(id);   
+                }
+            }, 10);
+        }
+    )
+  }
   let s = setSpeech();
   const [voicesMenu, setVoices] = useState([]);
   s.then(v => {voices = v;
