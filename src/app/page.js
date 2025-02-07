@@ -19,6 +19,7 @@ let speed = 1;
 function setSpeech() {
     return new Promise(
         function (resolve, reject) {
+            if (window === undefined) { resolve([]); return null;}
             let synth = window.speechSynthesis;
             let id;
 
