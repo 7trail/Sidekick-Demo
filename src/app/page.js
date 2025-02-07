@@ -17,7 +17,7 @@ let statusText = "";
 let speed = 1;
 
 
-let s = setSpeech();
+
 
 
 let voiceOption = 101;
@@ -86,19 +86,19 @@ export default function Home() {
         }
     )
   }
-  
+  /*let s = setSpeech();
   s.then(v => {voices = v;
     //let listBox = document.getElementById("voices");
     let i = 0;
     for (let voice of voices) {
         /*let element = document.createElement("option");
         element.textContent = voice.voiceURI.toString().replace("Microsoft ", "");
-        element.value = i;*/
+        element.value = i;
         //listBox.appendChild(element);
   
     }
     console.log(voices);
-  });
+  });*/
   
   function initializeSpeechRecognition() {
     if (window === undefined) { return; }
