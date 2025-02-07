@@ -183,6 +183,7 @@ function SpeedSlider() {
 }
 
 function VoiceList() {
+  const [voicesMenu, setVoices] = useState([]);
   useEffect(() => {
     function setSpeech() {
       return new Promise(
@@ -201,7 +202,7 @@ function VoiceList() {
       )
     }
     let s = setSpeech();
-    const [voicesMenu, setVoices] = useState([]);
+    
     s.then(v => {voices = v;
         //let listBox = document.getElementById("voices");
         let i = 0;
