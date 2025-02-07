@@ -25,7 +25,7 @@ function setSpeech() {
             id = setInterval(() => {
                 if (synth.getVoices().length !== 0) {
                     resolve(synth.getVoices());
-                    clearInterval(id);
+                    clearInterval(id);   
                 }
             }, 10);
         }
