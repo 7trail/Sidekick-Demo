@@ -150,13 +150,7 @@ function SpeechBubble() {
   )
 }
 
-function Button() {
-  return (
-    <button id="startButton" onClick = {() => Start()}>
-      Start System
-    </button>
-  );
-}
+
 
 function Output() {
   return (
@@ -209,12 +203,12 @@ function VoiceList() {
     }
     let s = setSpeech();
     
-    s.then(v => {voices = v;
+    /*s.then(v => {voices = v;
         //let listBox = document.getElementById("voices");
         let i = 0;
         console.log(voices);
         setVoices(v);
-    });
+    });*/
   });
   return (
     <div id="voices">
@@ -230,6 +224,34 @@ function VoiceList() {
 let hasBeenSet = false;
 
 export default function Home() {
+
+  function Button() {
+    return (
+      <button id="startButton" onClick = {() => Start()}>
+        Start System
+      </button>
+    );
+  }
+
+  function Start() {
+    if (!isListening && !isSpeaking) {
+      startListening();
+    }
+  }
+  
+  
+  function startListening() {
+    if (recognition && !isListening && !isSpeaking) {
+        try {
+            recognition.start();
+        } catch (error) {
+            console.error("Error starting recognition:", error);
+            statusText = "Error starting: " + error.message;
+            isListening = false;
+        }
+    }
+  }
+
 
   useEffect(() => {
     function setSpeech() {
@@ -248,6 +270,7 @@ export default function Home() {
           }
       )
     }
+    
     
     let s = setSpeech();
     s.then(v => {voices = v;
@@ -408,19 +431,8 @@ export default function Home() {
           isSpeaking = false;
       }
     }
+
     
-    
-    function startListening() {
-      if (recognition && !isListening && !isSpeaking) {
-          try {
-              recognition.start();
-          } catch (error) {
-              console.error("Error starting recognition:", error);
-              statusText = "Error starting: " + error.message;
-              isListening = false;
-          }
-      }
-    }
     
     function stopListening() {
       if (recognition && isListening) {
@@ -481,11 +493,7 @@ export default function Home() {
       centerProfile = m;
     }
     
-    function Start() {
-      if (!isListening && !isSpeaking) {
-        startListening();
-      }
-    }
+    
     
     
     
