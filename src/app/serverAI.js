@@ -57,11 +57,11 @@ let centerProfileDict = {
   }
 }
 
-function getGreeterPrompt() {
+function getGreeterPrompt(centerProfile) {
     
   var time = new Date();
   let formattedTime = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-  let profile = centerProfileDict[localData.centerProfile];
+  let profile = centerProfileDict[centerProfile];
 
   let greeterPrompt = `You are a greeter for Tarrant County College students and visitors. Don't bring up your name- let students ask for it (Cassidy).
 
@@ -85,8 +85,8 @@ function getGreeterPrompt() {
   return greeterPrompt;
 }
 
-function getSidekickPrompt() {
-  let profile = centerProfileDict[localData.centerProfile];
+function getSidekickPrompt(centerProfile) {
+  let profile = centerProfileDict[centerProfile];
   let sidekickPrompt = `You are a assistant for Tarrant County College students and visitors. Don't bring up your name- let students ask for it (Cassidy).
 
   Your job is to continue, as an assistant, the following conversation.
@@ -103,7 +103,7 @@ function getSidekickPrompt() {
   return sidekickPrompt;
 }
 
-function getAssistantPrompt() {
+function getAssistantPrompt(centerProfile) {
   return `You are an assistant. You are here to assist your user. You speak in a formal tone but may do otherwise if instructed. Your name is Cassidy, and you speak formally with users. You speak in short sentences at first and let the user guide the conversation and tone.
 
   Your job is to continue, as an assistant, the following conversation.
@@ -148,12 +148,12 @@ async function getResponse(prompt, mdl, depth) {
 
 export async function generateResponse(data, mode, centerProfile, fullContext, userId) {
   let p = "";
-  if (localData.mode  == "greeter") {
-      p = getGreeterPrompt();
-  } else if (localData.mode == "sidekick") {
-      p = getSidekickPrompt();
-  } else if (localData.mode == "assistant") {
-    p = getAssistantPrompt();
+  if (mode  == "greeter") {
+      p = getGreeterPrompt(centerProfile);
+  } else if (mode == "sidekick") {
+      p = getSidekickPrompt(centerProfile);
+  } else if (mode == "assistant") {
+    p = getAssistantPrompt(centerProfile);
   }
 
   let prompt = `${p} \n\n ${fullContext}`;

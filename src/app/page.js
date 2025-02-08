@@ -482,7 +482,7 @@ export default function Home() {
   function ProfileInput() {
     return (
       <div className="profileInput">
-        <input type="text" id="profile" name="profile" placeholder="Enter Profile ID" change={(e) => updateUserId(e.target.value)}></input>
+        <input type="text" id="profile" name="profile" placeholder="Enter Profile ID" Change={(e) => updateUserId(e.target.value)}></input>
         <p>Your ID: <span>{localData.userId}</span></p>
       </div>
     )
