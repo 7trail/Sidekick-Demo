@@ -334,7 +334,7 @@ export default function Home() {
     
       if (!window.SpeechRecognition) {
           statusText = "Speech recognition is not supported in this browser.";
-          startButton.disabled = true;
+          //startButton.disabled = true;
           return;
       }
     
