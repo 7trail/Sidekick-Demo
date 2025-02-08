@@ -105,39 +105,41 @@ function ProfileSelect() {
 }
 
 function SpeechBubble() {
-  const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}]);
+  const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, false]);
 
   useEffect(() => {
-    window.setInterval(() => {
-      color = {r: lerp(color.r, targetColor.r, 0.05), g: lerp(color.g, targetColor.g, 0.05), b: lerp(color.b, targetColor.b, 0.05)};
-      let newFactor = 1 * (isListening ? 0.4 : 1) * (isSpeaking ? 1.5 : 1);
-      factor = lerp(factor, newFactor, 0.05);
-    
-      let f1 = (Math.abs(Math.sin(t)) * 0.75 + 0.25);
-      let speech1Height =  f1* factor * 200;
-      speechPart1Height = speech1Height;
-    
-      let f2 = (Math.abs(Math.sin(t+0.2)) * 0.75 + 0.25);
-      let speech2Height = f2 * factor * 200;
-      speechPart2Height = speech2Height;
-    
-      let f3 = (Math.abs(Math.sin(t+0.4)) * 0.75 + 0.25);
-      let speech3Height = f3 * factor * 200;
-      speechPart3Height = speech3Height;
-    
-      let speech1Color = {r: lerp(0.5, color.r, Math.pow(f1, 2)), g: lerp(0.5, color.g, Math.pow(f1, 2)), b: lerp(0.5, color.b, Math.pow(f1, 2))};
-      speechPart1Color = speech1Color;
-    
-      let speech2Color = {r: lerp(0.5, color.r, Math.pow(f2, 2)), g: lerp(0.5, color.g, Math.pow(f2, 2)), b: lerp(0.5, color.b, Math.pow(f2, 2))};
-      speechPart2Color = speech2Color;
-    
-      let speech3Color = {r: lerp(0.5, color.r, Math.pow(f3, 2)), g: lerp(0.5, color.g, Math.pow(f3, 2)), b: lerp(0.5, color.b, Math.pow(f3, 2))};
-      speechPart3Color = speech3Color;
-
-      setSpeechData([speech1Height, speech2Height, speech3Height, speech1Color, speech2Color, speech3Color]);
+    if (!speechData[6]) {
+      window.setInterval(() => {
+        color = {r: lerp(color.r, targetColor.r, 0.05), g: lerp(color.g, targetColor.g, 0.05), b: lerp(color.b, targetColor.b, 0.05)};
+        let newFactor = 1 * (isListening ? 0.4 : 1) * (isSpeaking ? 1.5 : 1);
+        factor = lerp(factor, newFactor, 0.05);
       
-      t+= 0.04;
-    }, 20)
+        let f1 = (Math.abs(Math.sin(t)) * 0.75 + 0.25);
+        let speech1Height =  f1* factor * 200;
+        speechPart1Height = speech1Height;
+      
+        let f2 = (Math.abs(Math.sin(t+0.2)) * 0.75 + 0.25);
+        let speech2Height = f2 * factor * 200;
+        speechPart2Height = speech2Height;
+      
+        let f3 = (Math.abs(Math.sin(t+0.4)) * 0.75 + 0.25);
+        let speech3Height = f3 * factor * 200;
+        speechPart3Height = speech3Height;
+      
+        let speech1Color = {r: lerp(0.5, color.r, Math.pow(f1, 2)), g: lerp(0.5, color.g, Math.pow(f1, 2)), b: lerp(0.5, color.b, Math.pow(f1, 2))};
+        speechPart1Color = speech1Color;
+      
+        let speech2Color = {r: lerp(0.5, color.r, Math.pow(f2, 2)), g: lerp(0.5, color.g, Math.pow(f2, 2)), b: lerp(0.5, color.b, Math.pow(f2, 2))};
+        speechPart2Color = speech2Color;
+      
+        let speech3Color = {r: lerp(0.5, color.r, Math.pow(f3, 2)), g: lerp(0.5, color.g, Math.pow(f3, 2)), b: lerp(0.5, color.b, Math.pow(f3, 2))};
+        speechPart3Color = speech3Color;
+
+        setSpeechData([speech1Height, speech2Height, speech3Height, speech1Color, speech2Color, speech3Color, true]);
+        
+        t+= 0.04;
+      }, 20);
+    }
   });
   return (
     <div id="speechBubble">
