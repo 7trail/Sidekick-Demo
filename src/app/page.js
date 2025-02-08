@@ -36,6 +36,10 @@ let voiceOption = 101;
 let fullContext = "";
 let count = 0;
 
+function lerp(a, b, t) {
+  return a * (1-t) + b * t;
+}
+
 let centerProfileDict = {
   "math": {
       "name": "Math Learning Center",
@@ -482,9 +486,7 @@ export default function Home() {
     }
     
     
-    function lerp(a, b, t) {
-      return a * (1-t) + b * t;
-    }
+    
     initializeSpeechRecognition();
   });
 
