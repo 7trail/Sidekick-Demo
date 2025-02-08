@@ -196,7 +196,7 @@ function startListening() {
 let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math"};
 export default function Home() {
   
-  [localData, setLocalData] = useState({statusText: "", outputText: "", mode:"greeter", centerProfile:"math"});
+  const [localData, setLocalData] = useState({statusText: "", outputText: "", mode:"greeter", centerProfile:"math"});
   
   rebuildLocalElements();
 
@@ -273,7 +273,7 @@ export default function Home() {
       fullContext += `\nUser: ${speechResult} \n`;
     
       let p = "";
-      if (mode  == "greeter") {
+      if (localData.mode  == "greeter") {
           p = getGreeterPrompt();
       } else {
           p = getSidekickPrompt();
@@ -283,7 +283,7 @@ export default function Home() {
     
       console.log(prompt);
     
-      if (mode  == "greeter") {
+      if (localData.mode  == "greeter") {
           targetColor = {r: 0, g: 0, b: 30};
       } else {
           targetColor = {r: 0, g: 30, b: 0};
@@ -378,7 +378,7 @@ export default function Home() {
     
           speechSynthesisUtterance.onstart = () => {
             updateStatusText( "Speaking...");
-              if (mode == "greeter") {
+              if (localData.mode == "greeter") {
                   targetColor = {r: 50, g: 50, b: 255};
               } else {
                   targetColor = {r: 50, g: 255, b: 50};
@@ -388,7 +388,7 @@ export default function Home() {
           speechSynthesisUtterance.onend = () => {
               isSpeaking = false;
               updateStatusText("Speaking complete.");
-              if (mode  == "greeter") {
+              if (localData.mode  == "greeter") {
                   targetColor = {r: 0, g: 0, b: 255};
               } else {
                   targetColor = {r: 0, g: 255, b: 0};
@@ -427,7 +427,7 @@ export default function Home() {
     
       var time = new Date();
       let formattedTime = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-      let profile = centerProfileDict[centerProfile];
+      let profile = centerProfileDict[localData.centerProfile];
     
       let greeterPrompt = `You are a greeter for Tarrant County College students and visitors. Don't bring up your name- let students ask for it (Cassidy).
     
@@ -450,7 +450,7 @@ export default function Home() {
     }
     
     function getSidekickPrompt() {
-      let profile = centerProfileDict[centerProfile];
+      let profile = centerProfileDict[localData.centerProfile];
       let sidekickPrompt = `You are a assistant for Tarrant County College students and visitors. Don't bring up your name- let students ask for it (Cassidy).
     
       Your job is to continue, as an assistant, the following conversation.
