@@ -460,6 +460,9 @@ export default function Home() {
       
         <input type="radio" id="option2" name="mode" value="sidekick" onClick = {() => SetMode("sidekick")} />
         <label htmlFor="option2">Sidekick</label> 
+
+        <input type="radio" id="option5" name="mode" value="assistant" onClick = {() => SetMode("assistant")} />
+        <label htmlFor="option5">Assistant</label> 
       </div>
     )
   }
