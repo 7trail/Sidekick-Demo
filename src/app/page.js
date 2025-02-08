@@ -11,9 +11,9 @@ let isSpeaking = false;
 let speechSynthesisUtterance;
 
 let voices = [];
-let mode = "greeter";
-let outputText = "";
-let statusText = "";
+//let mode = "greeter";
+//let outputText = "";
+//let statusText = "";
 let speed = 1;
 
 let color = {r: 0, g: 0, b: 0};
@@ -61,17 +61,11 @@ let centerProfileDict = {
   }
 }
 
-let centerProfile = "math";
+//let centerProfile = "math";
 
 
 
-function SetMode(m) {
-  mode = m;
-}
 
-function SetProfile(m) {
-  centerProfile = m;
-}
 
 
 // Actual REACT Code
@@ -86,29 +80,7 @@ function ChatNode({text}) {
 
 
 
-function ModeSelect() {
-  return (
-    <div className="modeSelect">
-      <input type="radio" id="option1" name="mode" value="greeter" onClick = {() => SetMode("greeter")} />
-      <label htmlFor="option1">Greeter</label>
-    
-      <input type="radio" id="option2" name="mode" value="sidekick" onClick = {() => SetMode("sidekick")} />
-      <label htmlFor="option2">Sidekick</label> 
-    </div>
-  )
-}
 
-function ProfileSelect() {
-  return (
-    <div className="profileSelect">
-        <input type="radio" id="option3" name="profile" value="math" onClick = {() => SetProfile("math")} />
-        <label htmlFor="option3">Math</label>
-      
-        <input type="radio" id="option4" name="profile" value="computer-science" onClick = {() => SetProfile("computer-science")} />
-        <label htmlFor="option4">Computer Science</label> 
-    </div>
-  )
-}
 
 function SpeechBubble() {
   const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, false]);
@@ -158,35 +130,6 @@ function SpeechBubble() {
 
 
 
-function Output() {
-  return (
-    <div id="output">
-      <p>{outputText}</p>
-    </div>
-  )
-}
-
-function Status() {
-  return (
-    <div id="status">
-      <p>{statusText}</p>
-    </div>
-  )
-}
-
-function SpeedSlider() {
-  function updateSpeed(e) {
-    speed = e.target.value;
-    console.log(speed)
-  }
-  return (
-    <div id="speedSlider">
-      <span><b>Slow</b></span>
-      <input type="range" min="0.5" max="2" value="1" step="0.5" id="rate" onChange = {(e) => updateSpeed(e)} />
-      <span><b>Fast</b></span>
-    </div>
-  )
-}
 
 function VoiceList() {
   const [voicesMenu, setVoices] = useState([]);
@@ -227,7 +170,6 @@ function VoiceList() {
   )
 }
 
-let hasBeenSet = false;
 
 function Start() {
   if (!isListening && !isSpeaking) {
@@ -242,25 +184,49 @@ function startListening() {
           recognition.start();
       } catch (error) {
           console.error("Error starting recognition:", error);
-          statusText = "Error starting: " + error.message;
+          //statusText = "Error starting: " + error.message;
           isListening = false;
       }
   }
 }
 
-function Button() {
-  return (
-    <button id="startButton" onClick = {() => Start()}>
-      Start System
-    </button>
-  );
-}
 
 export default function Home() {
+  let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math"};
+  [localData, setLocalData] = useState(tempLocalData);
 
+  function rebuildLocalElements() {
+    setLocalData(tempLocalData);
+  }
+
+  function updateStatusText(text) {
+    tempLocalData.statusText = text;
+    rebuildLocalElements();
+  }
+
+  function updateOutputText(text) {
+    tempLocalData.outputText = text;
+    rebuildLocalElements();
+  }
+
+  function updateMode(m) {
+    tempLocalData.mode = m;
+    rebuildLocalElements();
+  }
+
+  function updateProfile(m) {
+    tempLocalData.centerProfile = m;
+    rebuildLocalElements();
+  }
+
+  function SetMode(m) {
+    mode = m;
+  }
   
-  
-  
+  function SetProfile(m) {
+    centerProfile = m;
+  }
+
 
   useEffect(() => {
     function setSpeech() {
@@ -321,7 +287,7 @@ export default function Home() {
       
       fullContext += `\nAI: ${responseText} \n`
     
-      outputText = responseText;
+      updateOutputText(responseText);
       console.log(responseText);
     
       speak(responseText);
@@ -333,7 +299,7 @@ export default function Home() {
       window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
       if (!window.SpeechRecognition) {
-          statusText = "Speech recognition is not supported in this browser.";
+          updateStatusText("Speech recognition is not supported in this browser.");
           //startButton.disabled = true;
           return;
       }
@@ -344,31 +310,31 @@ export default function Home() {
       recognition.maxAlternatives = 1;
     
       recognition.onstart = () => {
-          statusText = "Listening...";
+          updateStatusText("Listening...");
           isListening = true;
       };
     
       recognition.onresult = async (event) => {
           const speechResult = event.results[0][0].transcript;
-          statusText = "Processing...";
+          updateStatusText("Processing...");
           await processUserSpeech(speechResult); // Call function to handle the transcribed text
       };
     
       recognition.onspeechend = () => {
-          statusText = "Acknowledged response";
+          updateStatusText("Acknowledged response");
           count = 0;
           stopListening(); // Stop listening when speech ends
       };
     
       recognition.onerror = async (event) => {
           console.error("Speech Recognition Error:", event.error);
-          statusText = "Error: " + event.error;
+          updateStatusText("Error: " + event.error);
           if (event.error.toString() == "no-speech") {
               //This is the best thing ever
               count++;
               if (count > 5) {
                   count = 0;
-                  outputText="<b>Try speaking to me!</b>";
+                  updateOutputText("<b>Try speaking to me!</b>");
                   fullContext = "";
               }
           }
@@ -406,7 +372,7 @@ export default function Home() {
           speechSynthesisUtterance.rate = speed;
     
           speechSynthesisUtterance.onstart = () => {
-              statusText = "Speaking...";
+            updateStatusText( "Speaking...");
               if (mode == "greeter") {
                   targetColor = {r: 50, g: 50, b: 255};
               } else {
@@ -416,7 +382,7 @@ export default function Home() {
     
           speechSynthesisUtterance.onend = () => {
               isSpeaking = false;
-              statusText = "Speaking complete.";
+              updateStatusText("Speaking complete.");
               if (mode  == "greeter") {
                   targetColor = {r: 0, g: 0, b: 255};
               } else {
@@ -428,7 +394,7 @@ export default function Home() {
     
           speechSynthesisUtterance.onerror = (event) => {
               console.error("TTS Error:", event.error);
-              statusText = "TTS Error: " + event.error;
+              updateStatusText("TTS Error: " + event.error);
               isSpeaking = false;
               startListening();  // Try to recover and listen again
           };
@@ -436,7 +402,7 @@ export default function Home() {
           window.speechSynthesis.speak(speechSynthesisUtterance);
           })
       } else {
-        statusText = "Text-to-speech not supported.";
+        updateStatusText("Text-to-speech not supported.");
           isSpeaking = false;
       }
     }
@@ -496,6 +462,70 @@ export default function Home() {
     
     initializeSpeechRecognition();
   });
+
+  function Output() {
+    return (
+      <div id="output">
+        <p>{localData.outputText}</p>
+      </div>
+    )
+  }
+  
+  function Status() {
+    return (
+      <div id="status">
+        <p>{localData.statusText}</p>
+      </div>
+    )
+  }
+
+  function Button() {
+    return (
+      <button id="startButton" disabled = {isListening || isSpeaking} onClick = {() => Start()}>
+        Start System
+      </button>
+    );
+  }
+
+  function ModeSelect() {
+    return (
+      <div className="modeSelect">
+        <input type="radio" id="option1" name="mode" value="greeter" onClick = {() => SetMode("greeter")} />
+        <label htmlFor="option1">Greeter</label>
+      
+        <input type="radio" id="option2" name="mode" value="sidekick" onClick = {() => SetMode("sidekick")} />
+        <label htmlFor="option2">Sidekick</label> 
+      </div>
+    )
+  }
+  
+  function ProfileSelect() {
+    return (
+      <div className="profileSelect">
+          <input type="radio" id="option3" name="profile" value="math" onClick = {() => SetProfile("math")} />
+          <label htmlFor="option3">Math</label>
+        
+          <input type="radio" id="option4" name="profile" value="computer-science" onClick = {() => SetProfile("computer-science")} />
+          <label htmlFor="option4">Computer Science</label> 
+      </div>
+    )
+  }
+  
+  
+  function SpeedSlider() {
+    function updateSpeed(e) {
+      speed = e.target.value;
+      console.log(speed)
+    }
+    return (
+      <div id="speedSlider">
+        <span><b>Slow</b></span>
+        <input type="range" min="0.5" max="2" value="1" step="0.5" id="rate" onChange = {(e) => updateSpeed(e)} />
+        <span><b>Fast</b></span>
+      </div>
+    )
+  }
+  
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
