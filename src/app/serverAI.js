@@ -157,6 +157,11 @@ export async function generateResponse(data, mode, centerProfile, fullContext, u
   }
 
   let prompt = `${p} \n\n ${fullContext}`;
-  let result = await getResponse(prompt, model, 0);
-  return result.text;
+  try {
+    let result = await getResponse(prompt, model, 0);
+    return result.text;
+  } catch (error) {
+    console.log(error);
+    return "I'm sorry, can you please say that one more time for me?";
+  }
 }
