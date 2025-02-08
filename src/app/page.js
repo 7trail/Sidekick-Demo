@@ -206,11 +206,15 @@ export default function Home() {
 
   function updateStatusText(text) {
     tempLocalData.statusText = text;
+    console.log("Updated status");
+    console.log(localData)
     rebuildLocalElements();
+    console.log(localData)
   }
 
   function updateOutputText(text) {
     tempLocalData.outputText = text;
+    console.log("Updated output");
     rebuildLocalElements();
   }
 
