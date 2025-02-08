@@ -226,6 +226,11 @@ export default function Home() {
 
   function SetMode(m) {
     updateMode(m)
+    if (m == "greeter") {
+      targetColor = {r: 0, g: 0, b: 255};
+    } else if (m == "sidekick") {
+      targetColor = {r: 0, g: 255, b: 0};
+    }
   }
   
   function SetProfile(m) {
