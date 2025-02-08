@@ -198,7 +198,7 @@ export default function Home() {
   
   const [localData, setLocalData] = useState({statusText: "", outputText: "", mode:"greeter", centerProfile:"math"});
   
-  rebuildLocalElements();
+  //rebuildLocalElements();
 
   function rebuildLocalElements() {
     setLocalData(tempLocalData);
