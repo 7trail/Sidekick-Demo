@@ -290,7 +290,7 @@ export default function Home() {
       } else if (localData.mode  == "assistant") {
           targetColor = {r: 30, g: 0, b: 0};
       }
-      responseText = await generateResponse(prompt, localData.mode, localData.centerProfile, fullContext, localData.userId);
+      responseText = await generateResponse("", localData.mode, localData.centerProfile, fullContext, localData.userId);
       
       fullContext += `\nAI: ${responseText} \n`
     

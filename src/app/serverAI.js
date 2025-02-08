@@ -157,6 +157,6 @@ export async function generateResponse(data, mode, centerProfile, fullContext, u
   }
 
   let prompt = `${p} \n\n ${fullContext}`;
-  let result = await getResponse(data, model, 0);
+  let result = await getResponse(prompt, model, 0);
   return result.text;
 }
