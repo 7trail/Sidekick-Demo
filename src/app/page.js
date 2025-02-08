@@ -348,7 +348,7 @@ export default function Home() {
           }*/
       };
     }
-    
+    let garbageObjectToMakeSafariHappy = new SpeechSynthesisUtterance('');
     function speak(text) {
       if (window === undefined) { return; }
       if ('speechSynthesis' in window) {
