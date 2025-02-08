@@ -201,15 +201,15 @@ export default function Home() {
   //rebuildLocalElements();
 
   function rebuildLocalElements() {
-    setLocalData(tempLocalData);
+    setLocalData({statusText: tempLocalData.statusText, outputText: tempLocalData.outputText, mode: tempLocalData.mode, centerProfile: tempLocalData.centerProfile});
   }
 
   function updateStatusText(text) {
     tempLocalData.statusText = text;
     console.log("Updated status");
-    console.log(localData)
+    //console.log(localData)
     rebuildLocalElements();
-    console.log(localData)
+    //console.log(localData)
   }
 
   function updateOutputText(text) {
