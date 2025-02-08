@@ -270,7 +270,7 @@ export default function Home() {
       // Replace this with your logic to generate a response based on speechResult
       let responseText;
     
-      /*fullContext += `\nUser: ${speechResult} \n`;
+      fullContext += `\nUser: ${speechResult} \n`;
     
       /*let p = "";
       if (localData.mode  == "greeter") {
@@ -290,6 +290,7 @@ export default function Home() {
       } else if (localData.mode  == "assistant") {
           targetColor = {r: 30, g: 0, b: 0};
       }
+      //console.log(fullContext);
       responseText = await generateResponse("", localData.mode, localData.centerProfile, fullContext, localData.userId);
       
       fullContext += `\nAI: ${responseText} \n`
