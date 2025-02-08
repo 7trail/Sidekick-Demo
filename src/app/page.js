@@ -55,7 +55,7 @@ function ChatNode({text}) {
 }
 
 function SpeechBubble() {
-  const [speechData, setSpeechData] = useState([200,200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, false]);
+  const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, false]);
 
   useEffect(() => {
     if (!speechData[6]) {
@@ -63,19 +63,17 @@ function SpeechBubble() {
         color = {r: lerp(color.r, targetColor.r, 0.05), g: lerp(color.g, targetColor.g, 0.05), b: lerp(color.b, targetColor.b, 0.05)};
         let newFactor = 1 * (isListening ? 0.4 : 1) * (isSpeaking ? 1.5 : 1);
         factor = lerp(factor, newFactor, 0.05);
-
-        let h1 = window.innerWidth/4;
       
         let f1 = (Math.abs(Math.sin(t)) * 0.75 + 0.25);
-        let speech1Height =  f1* factor * h1;
+        let speech1Height =  f1* factor * 200;
         speechPart1Height = speech1Height;
       
         let f2 = (Math.abs(Math.sin(t+0.2)) * 0.75 + 0.25);
-        let speech2Height = f2 * factor * h1;
+        let speech2Height = f2 * factor * 200;
         speechPart2Height = speech2Height;
       
         let f3 = (Math.abs(Math.sin(t+0.4)) * 0.75 + 0.25);
-        let speech3Height = f3 * factor * h1;
+        let speech3Height = f3 * factor * 200;
         speechPart3Height = speech3Height;
       
         let speech1Color = {r: lerp(0.5, color.r, Math.pow(f1, 2)), g: lerp(0.5, color.g, Math.pow(f1, 2)), b: lerp(0.5, color.b, Math.pow(f1, 2))};
@@ -87,7 +85,7 @@ function SpeechBubble() {
         let speech3Color = {r: lerp(0.5, color.r, Math.pow(f3, 2)), g: lerp(0.5, color.g, Math.pow(f3, 2)), b: lerp(0.5, color.b, Math.pow(f3, 2))};
         speechPart3Color = speech3Color;
 
-        setSpeechData([h1, speech1Height, speech2Height, speech3Height, speech1Color, speech2Color, speech3Color, true]);
+        setSpeechData([speech1Height, speech2Height, speech3Height, speech1Color, speech2Color, speech3Color, true]);
         
         t+= 0.04;
       }, 20);
@@ -95,9 +93,9 @@ function SpeechBubble() {
   });
   return (
     <div id="speechBubble">
-      <div className="circle" id="circle1" style={{width: speechData.h1,height: speechPart1Height, backgroundColor: `rgb(${speechPart1Color.r}, ${speechPart1Color.g}, ${speechPart1Color.b})`}}></div>
-      <div className="circle" id="circle2" style={{width: speechData.h1,height: speechPart2Height, backgroundColor: `rgb(${speechPart2Color.r}, ${speechPart2Color.g}, ${speechPart2Color.b})`}}></div>
-      <div className="circle" id="circle3" style={{width: speechData.h1,height: speechPart3Height, backgroundColor: `rgb(${speechPart3Color.r}, ${speechPart3Color.g}, ${speechPart3Color.b})`}}></div>
+      <div className="circle" id="circle1" style={{height: speechPart1Height, backgroundColor: `rgb(${speechPart1Color.r}, ${speechPart1Color.g}, ${speechPart1Color.b})`}}></div>
+      <div className="circle" id="circle2" style={{height: speechPart2Height, backgroundColor: `rgb(${speechPart2Color.r}, ${speechPart2Color.g}, ${speechPart2Color.b})`}}></div>
+      <div className="circle" id="circle3" style={{height: speechPart3Height, backgroundColor: `rgb(${speechPart3Color.r}, ${speechPart3Color.g}, ${speechPart3Color.b})`}}></div>
     </div>
   )
 }
