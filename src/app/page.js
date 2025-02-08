@@ -229,38 +229,38 @@ function VoiceList() {
 
 let hasBeenSet = false;
 
+function Start() {
+  if (!isListening && !isSpeaking) {
+    console.log("Go");
+    startListening();
+  }
+}
+
+function startListening() {
+  if (recognition && !isListening && !isSpeaking) {
+      try {
+          recognition.start();
+      } catch (error) {
+          console.error("Error starting recognition:", error);
+          statusText = "Error starting: " + error.message;
+          isListening = false;
+      }
+  }
+}
+
+function Button() {
+  return (
+    <button id="startButton" onClick = {() => Start()}>
+      Start System
+    </button>
+  );
+}
+
 export default function Home() {
 
-  function Button() {
-
-    function Start() {
-      if (!isListening && !isSpeaking) {
-        console.log("Go");
-        startListening();
-      }
-    }
-    return (
-      <button id="startButton" onClick = {() => Start()}>
-        Start System
-      </button>
-    );
-  }
-
   
   
   
-  function startListening() {
-    if (recognition && !isListening && !isSpeaking) {
-        try {
-            recognition.start();
-        } catch (error) {
-            console.error("Error starting recognition:", error);
-            statusText = "Error starting: " + error.message;
-            isListening = false;
-        }
-    }
-  }
-
 
   useEffect(() => {
     function setSpeech() {
