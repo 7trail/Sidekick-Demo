@@ -1,7 +1,6 @@
 'use server'
 
-
-const { HarmBlockThreshold, HarmCategory, GoogleGenerativeAI } = require("@google/generative-ai");
+const { HarmBlockThreshold, HarmCategory, GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
 
 let api_keys = [
     "V3JpdHRlbiBieSBBdXN0aW4gUGhpbGxpcHMgQXVnLVNlcCAyMDI0",
@@ -34,7 +33,8 @@ const safetySettings = [
   },
 ];
 
-var model = genAI.getGenerativeModel({ model: "gemini-1.5-flash", systemInstruction: `You greet students, answer their questions, and speak in a friendly tone.`, safetySettings});
+
+var model = genAI.getGenerativeModel({ model: "gemini-2.0-flash", safetySettings});
 
 let centerProfileDict = {
   "math": {
@@ -159,7 +159,11 @@ export async function generateResponse(data, mode, centerProfile, fullContext, u
   let prompt = `${p} \n\n ${fullContext}`;
   try {
     let result = await getResponse(prompt, model, 0);
-    return result.text;
+    result = result.text;
+    if (result.toString().startsWith("AI:")) {
+      result = result.toString().substring(4);
+    }
+    return result;
   } catch (error) {
     console.log(error);
     return "I'm sorry, can you please say that one more time for me?";

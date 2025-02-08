@@ -270,7 +270,7 @@ export default function Home() {
       // Replace this with your logic to generate a response based on speechResult
       let responseText;
     
-      fullContext += `\nUser: ${speechResult} \n`;
+      fullContext += `\nUser: ${speechResult} \n\nAI: `;
     
       /*let p = "";
       if (localData.mode  == "greeter") {
@@ -293,7 +293,7 @@ export default function Home() {
       //console.log(fullContext);
       responseText = await generateResponse("", localData.mode, localData.centerProfile, fullContext, localData.userId);
       
-      fullContext += `\nAI: ${responseText} \n`
+      fullContext += `${responseText} \n`
     
       updateOutputText(responseText);
       console.log(responseText);
