@@ -65,7 +65,13 @@ let centerProfile = "math";
 
 
 
+function SetMode(m) {
+  mode = m;
+}
 
+function SetProfile(m) {
+  centerProfile = m;
+}
 
 
 // Actual REACT Code
@@ -226,6 +232,13 @@ let hasBeenSet = false;
 export default function Home() {
 
   function Button() {
+
+    function Start() {
+      if (!isListening && !isSpeaking) {
+        console.log("Go");
+        startListening();
+      }
+    }
     return (
       <button id="startButton" onClick = {() => Start()}>
         Start System
@@ -233,11 +246,7 @@ export default function Home() {
     );
   }
 
-  function Start() {
-    if (!isListening && !isSpeaking) {
-      startListening();
-    }
-  }
+  
   
   
   function startListening() {
@@ -484,18 +493,6 @@ export default function Home() {
     
       return sidekickPrompt;
     }
-    
-    function SetMode(m) {
-      mode = m;
-    }
-    
-    function SetProfile(m) {
-      centerProfile = m;
-    }
-    
-    
-    
-    
     
     initializeSpeechRecognition();
   });
