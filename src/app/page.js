@@ -151,6 +151,9 @@ function VoiceList() {
       )
     }
     let s = setSpeech();
+    s.then(v => {
+      setVoices(v);
+    })
     
     /*s.then(v => {voices = v;
         //let listBox = document.getElementById("voices");
@@ -190,10 +193,12 @@ function startListening() {
   }
 }
 
-
+let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math"};
 export default function Home() {
-  let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math"};
-  [localData, setLocalData] = useState(tempLocalData);
+  
+  [localData, setLocalData] = useState({statusText: "", outputText: "", mode:"greeter", centerProfile:"math"});
+  
+  rebuildLocalElements();
 
   function rebuildLocalElements() {
     setLocalData(tempLocalData);
@@ -220,11 +225,11 @@ export default function Home() {
   }
 
   function SetMode(m) {
-    mode = m;
+    updateMode(m)
   }
   
   function SetProfile(m) {
-    centerProfile = m;
+    updateProfile(m)
   }
 
 
