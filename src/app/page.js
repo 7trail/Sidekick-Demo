@@ -40,33 +40,9 @@ function lerp(a, b, t) {
   return a * (1-t) + b * t;
 }
 
-let centerProfileDict = {
-  "math": {
-      "name": "Math Learning Center",
-      "field": "",
-      "additionalData": `- The Math Learning Center is open to all students, but specifically serves math and physics students best.
-  - Assistants are available to assist you with your work if you need it, but they will not assist with quizzes or exams.
-  - Assistants are knowledgeable on Algebra, Pre-calculus, Trigonometry, Statistics, Calculus, Contemporary Math, Differential Equations, Discrete Math, Physics, and more.
-  - If you need to take an exam, ask a tutor for assistance.
-  - If you need to make up an exam, you may be able to use the Math Testing Center. Talk to a tutor to get additional information.`
-  },
-  "computer-science": {
-      "name": "Computer Learning Center",
-      "field": "",
-      "additionalData": `- The Computer Learning Center is open to all students, but specifically serves computer science students best.
-  - Assistants are available to assist you with your work if you need it, but they will not assist with quizzes or exam.
-  - Assistants are knowledgeable on Microsoft Office, C++, Java, Python, Web Programming, Networking, Cloud Computing, General Computer Usage, and more.
-  - If students express a need to work on graphics assignments, there is a dedicated Graphic Design lab located in NCAB.
-  - If you need to take an exam, ask a tutor for assistance.`
-  }
-}
-
-//let centerProfile = "math";
 
 
-
-
-
+//let centerProfile = "math";\
 
 // Actual REACT Code
 
@@ -77,10 +53,6 @@ function ChatNode({text}) {
     </p>
   );
 }
-
-
-
-
 
 function SpeechBubble() {
   const [speechData, setSpeechData] = useState([200,200,200, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, {r: 0, g: 0, b: 0}, false]);
@@ -193,7 +165,19 @@ function startListening() {
   }
 }
 
-let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math"};
+function makeid(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
+let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math", userId: makeid(5)};
 export default function Home() {
   
   const [localData, setLocalData] = useState(tempLocalData);
@@ -201,12 +185,12 @@ export default function Home() {
   //rebuildLocalElements();
 
   function rebuildLocalElements() {
-    setLocalData({statusText: tempLocalData.statusText, outputText: tempLocalData.outputText, mode: tempLocalData.mode, centerProfile: tempLocalData.centerProfile});
+    setLocalData({statusText: tempLocalData.statusText, outputText: tempLocalData.outputText, mode: tempLocalData.mode, centerProfile: tempLocalData.centerProfile, userId: tempLocalData.userId});
   }
 
   function updateStatusText(text) {
     tempLocalData.statusText = text;
-    console.log("Updated status");
+    //console.log("Updated status");
     //console.log(localData)
     rebuildLocalElements();
     //console.log(localData)
@@ -214,7 +198,7 @@ export default function Home() {
 
   function updateOutputText(text) {
     tempLocalData.outputText = text;
-    console.log("Updated output");
+    //console.log("Updated output");
     rebuildLocalElements();
   }
 
@@ -228,12 +212,19 @@ export default function Home() {
     rebuildLocalElements();
   }
 
+  function updateUserId(m) {
+    tempLocalData.userId = m;
+    rebuildLocalElements();
+  }
+
   function SetMode(m) {
     updateMode(m)
     if (m == "greeter") {
       targetColor = {r: 0, g: 0, b: 255};
     } else if (m == "sidekick") {
       targetColor = {r: 0, g: 255, b: 0};
+    } else if (m == "assistant") {
+      targetColor = {r: 255, g: 0, b: 0};
     }
   }
   
@@ -279,25 +270,27 @@ export default function Home() {
       // Replace this with your logic to generate a response based on speechResult
       let responseText;
     
-      fullContext += `\nUser: ${speechResult} \n`;
+      /*fullContext += `\nUser: ${speechResult} \n`;
     
-      let p = "";
+      /*let p = "";
       if (localData.mode  == "greeter") {
           p = getGreeterPrompt();
       } else {
           p = getSidekickPrompt();
       }
     
-      let prompt = `${p} \n\n ${fullContext}`
+      let prompt = `${p} \n\n ${fullContext}`*/
     
-      console.log(prompt);
+      //console.log(prompt);
     
       if (localData.mode  == "greeter") {
           targetColor = {r: 0, g: 0, b: 30};
-      } else {
+      } else if (localData.mode  == "sidekick") {
           targetColor = {r: 0, g: 30, b: 0};
+      } else if (localData.mode  == "assistant") {
+          targetColor = {r: 30, g: 0, b: 0};
       }
-      responseText = await generateResponse(prompt);
+      responseText = await generateResponse(prompt, localData.mode, localData.centerProfile, fullContext, localData.userId);
       
       fullContext += `\nAI: ${responseText} \n`
     
@@ -389,8 +382,10 @@ export default function Home() {
             updateStatusText( "Speaking...");
               if (localData.mode == "greeter") {
                   targetColor = {r: 50, g: 50, b: 255};
-              } else {
+              } else if (localData.mode  == "sidekick") {
                   targetColor = {r: 50, g: 255, b: 50};
+              } else if (localData.mode  == "assistant") {
+                  targetColor = {r: 255, g: 50, b: 50};
               }
           };
     
@@ -399,8 +394,10 @@ export default function Home() {
               updateStatusText("Speaking complete.");
               if (localData.mode  == "greeter") {
                   targetColor = {r: 0, g: 0, b: 255};
-              } else {
+              } else if (localData.mode  == "sidekick") {
                   targetColor = {r: 0, g: 255, b: 0};
+              } else if (localData.mode  == "assistant") {
+                  targetColor = {r: 255, g: 0, b: 0};
               }
               // Restart listening after speaking is done
               startListening();
@@ -420,58 +417,12 @@ export default function Home() {
           isSpeaking = false;
       }
     }
-
-    
     
     function stopListening() {
       if (recognition && isListening) {
           recognition.stop();
           isListening = false;
       }
-    }
-    
-    
-    
-    function getGreeterPrompt() {
-    
-      var time = new Date();
-      let formattedTime = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-      let profile = centerProfileDict[localData.centerProfile];
-    
-      let greeterPrompt = `You are a greeter for Tarrant County College students and visitors. Don't bring up your name- let students ask for it (Cassidy).
-    
-      Your job is to continue, as a greeter, the following conversation. If it has not been done yet, ask users for their name and refer to them by it.
-    
-      You are allowed to discuss the following material:
-      - Students must sign in at the kiosk with either their student ID or email address. Don't forget to sign out!
-      - All Learning Commons services (Library and Learning Centers) are open 7:30 am - 9:00 pm Monday through Thursday, 7:30 - 5:00 pm Friday, and 10:00 - 4:00 pm Saturday.
-      ${profile.additionalData}
-    
-      You are also allowed to make general smalltalk with students. You may respond in the same language the student has spoken to you in, you can speak any language.
-    
-      It is currently ${formattedTime}. If that time is past 8:30 pm, inform the student that the ${profile.name} will be closing soon (if it has not been done already).
-    
-      Simply provide your response, with no formatting. Keep your response under 30 words.
-      
-      The conversation begins below:`
-    
-      return greeterPrompt;
-    }
-    
-    function getSidekickPrompt() {
-      let profile = centerProfileDict[localData.centerProfile];
-      let sidekickPrompt = `You are a assistant for Tarrant County College students and visitors. Don't bring up your name- let students ask for it (Cassidy).
-    
-      Your job is to continue, as an assistant, the following conversation.
-    
-      You assist students in their learning. They may ask you questions and you will answer them. You primarily serve the ${profile.name}.
-      Your answers are no longer than 100 words. Your responses should be informative and factual.
-      You should inquire as to the subject that the student is studying, if you have not done so.
-      While you should entertain them with smalltalk if they so desire, you should not allow it to persist long, and you should work to keep them focused.
-      
-      The conversation begins below:`
-    
-      return sidekickPrompt;
     }
     
     initializeSpeechRecognition();
@@ -524,6 +475,15 @@ export default function Home() {
       </div>
     )
   }
+
+  function ProfileInput() {
+    return (
+      <div className="profileInput">
+        <input type="text" id="profile" name="profile" placeholder="Enter Profile ID" change={(e) => updateUserId(e.target.value)}></input>
+        <p>Your ID: <span>{localData.userId}</span></p>
+      </div>
+    )
+  }
   
   
   function SpeedSlider() {
@@ -550,6 +510,7 @@ export default function Home() {
         <Button />
         <div id="options">
           <ProfileSelect />
+          <ProfileInput />
           <VoiceList />
           <ModeSelect />
           <SpeedSlider />
