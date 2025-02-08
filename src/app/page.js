@@ -196,7 +196,7 @@ function startListening() {
 let tempLocalData = {statusText: "", outputText: "", mode:"greeter", centerProfile:"math"};
 export default function Home() {
   
-  const [localData, setLocalData] = useState({statusText: "", outputText: "", mode:"greeter", centerProfile:"math"});
+  const [localData, setLocalData] = useState(tempLocalData);
   
   //rebuildLocalElements();
 
