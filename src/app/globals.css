@@ -107,7 +107,6 @@ html {
 body {
   font-family: sans-serif;
   text-align: center;
-  
 }
 
 #output {
@@ -123,8 +122,8 @@ body {
 }
 
 .circle {
-  width: 200px;
-  /*height: 200px;*/
+  /*width: 200px;
+  height: 200px;*/
   background-color: var(--theme-color-1);
   border-radius: 100px;
   margin: auto;
